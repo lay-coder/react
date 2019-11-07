@@ -17,7 +17,7 @@ const APP = () => (
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <Redirect to="/login" />
+          <Redirect to="/console" />
         </Route>
         <Route exact path="/login" component={Login} />
         {routes.map((route, i) => (

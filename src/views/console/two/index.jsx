@@ -19,11 +19,7 @@ export default class LayoutConsoleTwo extends Component {
           <Link to="/console/two/show">去two/show</Link>
         </Button>
         <Switch>
-          <Route
-            exact
-            path="/console/two/three"
-            component={LayoutConsoleThree}
-          />
+          <Route path="/console/two/three" component={LayoutConsoleThree} />
           <Route exact path="/console/two/show" component={LayoutShow} />
         </Switch>
       </div>
