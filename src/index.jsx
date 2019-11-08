@@ -19,7 +19,7 @@ const APP = () => (
       <Route
         key={i}
         path={route.path}
-        render={() => <route.component {...props} routes={route.routes} />}
+        render={props => <route.component {...props} routes={route.routes} />}
       ></Route>
     ))}
   </BrowserRouter>
