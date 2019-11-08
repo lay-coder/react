@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Button } from 'element-react'
-import { Switch, Route, Link } from 'react-router-dom'
-import LayoutConsoleThree from '../three'
-import LayoutShow from 'views/show/layout-show'
+import { Route, Link } from 'react-router-dom'
 export default class LayoutConsoleTwo extends Component {
   constructor(props) {
     super(props)
     this.state = {}
+  }
+  componentDidMount() {
+    console.log(this.props)
   }
   render() {
     return (
@@ -15,13 +16,18 @@ export default class LayoutConsoleTwo extends Component {
         <Button>
           <Link to="/console/two/three">去three</Link>
         </Button>
-        <Button>
-          <Link to="/console/two/show">去two/show</Link>
-        </Button>
-        <Switch>
-          <Route path="/console/two/three" component={LayoutConsoleThree} />
-          <Route exact path="/console/two/show" component={LayoutShow} />
-        </Switch>
+        {this.props.routes.map((route, i) => {
+          return (
+            <Route
+              key={i}
+              exact
+              path={route.path}
+              render={props => (
+                <route.component {...props} routes={route.routes} />
+              )}
+            />
+          )
+        })}
       </div>
     )
   }

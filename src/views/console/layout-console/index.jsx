@@ -6,6 +6,9 @@ export default class LayoutConsole extends Component {
     super(props)
     this.state = {}
   }
+  componentDidMount() {
+    console.log(this.props)
+  }
   render() {
     return (
       <div className="hello">
@@ -16,13 +19,15 @@ export default class LayoutConsole extends Component {
           <Link to="/console/two">去two</Link>
         </Button>
         LayoutConsole
-        {this.props.routes.map((item, index) => {
+        {this.props.routes.map((route, i) => {
           return (
             <Route
-              key={index}
+              key={i}
               exact
-              path={item.path}
-              component={item.component}
+              path={route.path}
+              render={props => (
+                <route.component {...props} routes={route.routes} />
+              )}
             />
           )
         })}
