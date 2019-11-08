@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter, Route } from 'react-router-dom'
 import 'element-theme-default'
 import './index.scss'
-// import APP from './router'
+import { createHashHistory } from 'history'
 import * as serviceWorker from './serviceWorker'
 import Parent from 'components/Parent'
 const routes = [
@@ -12,13 +12,14 @@ const routes = [
     component: Parent,
   },
 ]
+const history = createHashHistory()
 const APP = () => (
-  <BrowserRouter history={}>
+  <BrowserRouter history={history}>
     {routes.map((route, i) => (
       <Route
         key={i}
         path={route.path}
-        render={<route.component {...prop} routes={route.routes} />}
+        render={() => <route.component {...props} routes={route.routes} />}
       ></Route>
     ))}
   </BrowserRouter>
