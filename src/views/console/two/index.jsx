@@ -16,18 +16,13 @@ export default class LayoutConsoleTwo extends Component {
         <Button>
           <Link to="/console/two/three">去three</Link>
         </Button>
-        {this.props.routes.map((route, i) => {
-          return (
-            <Route
-              key={i}
-              exact
-              path={route.path}
-              render={props => (
-                <route.component {...props} routes={route.routes} />
-              )}
-            />
-          )
-        })}
+        {this.props.routes.map((route, i) => (
+          <Route
+            key={i}
+            path={route.path}
+            render={props => <route.component {...props} />}
+          />
+        ))}
       </div>
     )
   }
