@@ -1,12 +1,14 @@
-import Parent from 'components/Parent'
+
 import ChildrenOne from 'components/ChildrenOne'
 import ChildrenTwo from 'components/ChildrenTwo'
 import GrandSonone from 'components/GrandSonone'
 import GrandSonTwo from 'components/GrandSonTwo'
+import LayoutConsole from 'views/console/layout-console'
 const routes = [
   {
     path: '/',
-    component: Parent,
+    component: LayoutConsole,
+    redirect: '/one',
   },
   {
     path: '/one',
