@@ -8,6 +8,7 @@ import { createHashHistory } from 'history'
 import * as serviceWorker from './serviceWorker'
 import routes from 'router'
 import { Provider } from 'react-redux'
+import store from 'store'
 import 'element-theme-default'
 import './index.scss'
 
@@ -30,7 +31,7 @@ const App = () => (
 
 
 ReactDOM.render(
-  <Provider>
+  <Provider store={store}>
     <App />
   </Provider>,
   document.getElementById('root')
