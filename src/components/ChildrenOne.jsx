@@ -1,7 +1,10 @@
 import React from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, Redirect } from 'react-router-dom'
 import { Button } from 'element-react'
 export default class ChildrenOne extends React.Component {
+  componentDidMount() {
+    console.log(this.props)
+  }
   render() {
     return (
       <div style={{ backgroundColor: 'yellow' }}>
@@ -14,10 +17,10 @@ export default class ChildrenOne extends React.Component {
             key={i}
             path={route.path}
             render={props => (
-              <route.component {...props} routes={route.routes} />
-            )}
-          />
+              <route.component {...props} routes={route.routes} redirect={route.redirect} />)} >
+          </Route>
         ))}
+        {this.props.redirect ? (<Redirect to={this.props.redirect} />) : null}
       </div>
     )
   }

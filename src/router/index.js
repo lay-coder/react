@@ -1,40 +1,22 @@
 
-import ChildrenOne from 'components/ChildrenOne'
-import ChildrenTwo from 'components/ChildrenTwo'
-import GrandSonone from 'components/GrandSonone'
-import GrandSonTwo from 'components/GrandSonTwo'
 import LayoutConsole from 'views/console/layout-console'
+import Login from 'views/login'
+import layoutShow from 'views/show/layout-show'
 const routes = [
   {
-    path: '/',
+    path: '/console',
+    exact: true,
     component: LayoutConsole,
-    redirect: '/one',
   },
   {
-    path: '/one',
-    component: ChildrenOne,
-    routes: [
-      {
-        path: '/one/grandson',
-        component: GrandSonone,
-        routes: [
-          {
-            path: '/one/grandson/son',
-            component: GrandSonTwo,
-          },
-        ],
-      },
-    ],
+    path: '/login',
+    exact: true,
+    component: Login,
   },
   {
-    path: '/two',
-    component: ChildrenTwo,
-    routes: [
-      {
-        path: '/two/grandson',
-        component: GrandSonTwo,
-      },
-    ],
+    path: '/show',
+    exact: true,
+    component: layoutShow,
   },
 ]
 export default routes

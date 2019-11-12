@@ -1,9 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {
-  Router, BrowserRouter, Route,
-  // Redirect 
-} from 'react-router-dom'
+import { Router, BrowserRouter, Route } from 'react-router-dom'
 import { createHashHistory } from 'history'
 import * as serviceWorker from './serviceWorker'
 import routes from 'router'
@@ -19,10 +16,10 @@ const App = () => (
     <BrowserRouter>
       {routes.map((route, i) => (
         <Route
+          exact={route.exact}
           key={i}
           path={route.path}
-          render={props => <route.component {...props} routes={route.routes} />}>
-          {/* {route.redirect ? (<Redirect to={route.redirect} />) : null} */}
+          render={props => <route.component {...props} routes={route.routes} redirect={route.redirect} />}>
         </Route>
       ))}
     </BrowserRouter>

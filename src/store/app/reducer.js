@@ -7,7 +7,6 @@ let defaultState = {
 export const theme = (state = defaultState, action) => {
   switch (action.type) {
     case appTheme.BGCOLOR:
-      console.log(action.data)
       return { ...state, ...action.data }
     default:
       return state

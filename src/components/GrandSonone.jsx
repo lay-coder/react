@@ -1,4 +1,4 @@
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, Redirect } from 'react-router-dom'
 import { Button } from 'element-react'
 import React from 'react'
 export default class GrandSonone extends React.Component {
@@ -6,7 +6,7 @@ export default class GrandSonone extends React.Component {
     return (
       <div style={{ backgroundColor: 'red' }}>
         大孙子
-        <Link to="/one/grandson/son">
+        <Link to="/one/grandson/grandsonSon">
           <Button>跳转大孙子的儿子</Button>
         </Link>
         {this.props.routes.map((route, i) => (
@@ -14,10 +14,11 @@ export default class GrandSonone extends React.Component {
             key={i}
             path={route.path}
             render={props => (
-              <route.component {...props} routes={route.routes} />
+              <route.component {...props} routes={route.routes} redirect={route.redirect} />
             )}
           />
         ))}
+        {this.props.redirect ? (<Redirect to={this.props.redirect} />) : null}
       </div>
     )
   }
