@@ -1,0 +1,1 @@
+export const BGCOLOR = 'BGCOLOR'
