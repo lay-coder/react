@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { Message } from 'element-react'
+import { getToken } from './auth'
 
 axios.defaults.timeout = 60 * 1000
 
@@ -8,7 +10,9 @@ const http = async (method, url, query, errorMsg, successMsg) => {
   const config = {
     method,
     url,
-    headers: {}
+    headers: {
+      Authorization: getToken()
+    }
   }
   switch (method) {
     case 'GET':
@@ -23,10 +27,18 @@ const http = async (method, url, query, errorMsg, successMsg) => {
   try {
     const response = await axios(config)
     const json = response.data
-    console.log(json)
+    if (json) {
+      switch (json.code) {
+        case 0:
+          Message.success(json.msg || successMsg)
+          break
+        default:
+          break
+      }
+    }
     return json
   } catch (err) {
-    console.log(err)
+    Message.error(err || '网络错误')
   }
   return errorResult
 }

@@ -2,12 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { changeTheme } from 'store/app/action'
-import { Button } from 'element-react'
+// import { changeTheme } from 'store/app/action'
 
 class LayoutShow extends React.Component {
   static propTypes = {
-    changeTheme: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
   }
   componentDidMount() {
@@ -18,7 +16,7 @@ class LayoutShow extends React.Component {
       <div style={{ backgroundColor: this.props.theme.bgColor }}>
         show
         <Link to="/console">
-          <Button>进入后台</Button>
+          进入后台
         </Link>
       </div>
     )
@@ -26,5 +24,5 @@ class LayoutShow extends React.Component {
 }
 export default connect(
   state => ({ theme: state.theme }),
-  { changeTheme },
+  // { changeTheme },
 )(LayoutShow)

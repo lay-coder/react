@@ -1,15 +1,15 @@
 import React from 'react'
-import { Form, Input, Button } from 'element-react'
+import { Form, Input, Button, MessageBox } from 'element-react'
 import { connect } from 'react-redux'
 import { setToken } from 'store/user/action'
-import { login } from 'api/user'
+import { login, forceLogin } from 'api/user'
 import './login.scss'
 
 class Login extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      form: {
+      loginQuery: {
         loginName: '',
         password: ''
       },
@@ -26,42 +26,61 @@ class Login extends React.Component {
   }
   onChange(key: any, value: any) {
     this.setState({
-      form: Object.assign(this.state.form, { [key]: value })
+      loginQuery: Object.assign(this.state.loginQuery, { [key]: value })
     })
   }
   keypress(e: any) {
     console.log(e)
   }
-  async login() {
-    try {
-      const response = await login(this.state.form)
-      if (response.code === 0) {
-        console.log(response.body.accountInfo.accessToken)
-        setToken(response.body.accountInfo.accessToken)
-        console.log(this.props)
-        // this.props.history.push({
-        //   pathname: '/console'
-        // })
-      }
-    } catch (e) { }
+  login() {
+    login(this.state.loginQuery)
+      .then((res) => {
+        switch (res.code) {
+          case 0:
+            this.props.setToken(res.body.accountInfo.accessToken)
+            this.props.history.push({
+              pathname: '/console'
+            })
+            break
+          case 40103:
+            MessageBox.confirm('你已在其他设备登录，是否强制登录', '确认', {
+              confirmButtonText: '确认',
+              cancelButtonText: '取消',
+              type: 'warning',
+            }).then(() => {
+              this.forceLogin()
+            }).catch((e) => {
+            })
+            break
+          default:
+            break
+        }
+      })
+  }
+  forceLogin() {
+    forceLogin(this.state.loginQuery)
+      .then((res) => {
+        this.props.setToken(res.body.accountInfo.accessToken)
+        this.props.history.push('/console')
+      })
   }
   LoginForm() {
     return (
       <Form
         labelPosition="top"
         labelWidth="100"
-        model={this.state.form}
+        model={this.state.loginQuery}
         className="login-form"
       >
         <Form.Item label="帐号">
           <Input
-            value={this.state.form.loginName}
+            value={this.state.loginQuery.loginName}
             onChange={this.onChange.bind(this, 'loginName')}
           />
         </Form.Item>
         <Form.Item label="密码">
           <Input
-            value={this.state.form.password}
+            value={this.state.loginQuery.password}
             onChange={this.onChange.bind(this, 'password')}
           />
         </Form.Item>
