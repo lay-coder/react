@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { Message } from 'element-react'
+import { message } from 'antd'
 import { getToken } from './auth'
 
 axios.defaults.timeout = 60 * 1000
 
 const errorResult = { code: -1, body: null }
-
+const hideTime = .5
 const http = async (method, url, query, errorMsg, successMsg) => {
   const config = {
     method,
@@ -30,7 +30,7 @@ const http = async (method, url, query, errorMsg, successMsg) => {
     if (json) {
       switch (json.code) {
         case 0:
-          Message.success(json.msg || successMsg)
+          message.success(json.msg || successMsg, hideTime)
           break
         default:
           break
@@ -38,7 +38,7 @@ const http = async (method, url, query, errorMsg, successMsg) => {
     }
     return json
   } catch (err) {
-    Message.error(err || '网络错误')
+    message.error(err || '网络错误', hideTime)
   }
   return errorResult
 }

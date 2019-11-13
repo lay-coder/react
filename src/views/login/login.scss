@@ -5,10 +5,7 @@
   left: 50%;
   margin: -150px 0 0 -150px;
 
-  .login-button {
-    .el-form-item__content {
-      display: flex;
-      justify-content: center;
-    }
+  .login-form-button {
+    width: 100%;
   }
 }

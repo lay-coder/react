@@ -1,10 +1,11 @@
 import React from 'react'
-import { Form, Input, Button, MessageBox } from 'element-react'
+import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd'
 import { connect } from 'react-redux'
 import { setToken } from 'store/user/action'
 import { login, forceLogin } from 'api/user'
 import './login.scss'
 
+const { confirm } = Modal
 class Login extends React.Component {
   constructor(props) {
     super(props)
@@ -15,7 +16,6 @@ class Login extends React.Component {
       },
       isLogin: false
     }
-    this.LoginForm = this.LoginForm.bind(this)
   }
   componentDidMount() {
     console.log('componentDidMount')
@@ -33,23 +33,24 @@ class Login extends React.Component {
     console.log(e)
   }
   login() {
-    login(this.state.loginQuery)
+    const _that = this
+    login(_that.state.loginQuery)
       .then((res) => {
         switch (res.code) {
           case 0:
-            this.props.setToken(res.body.accountInfo.accessToken)
-            this.props.history.push({
-              pathname: '/console'
-            })
+            _that.props.setToken(res.body.accountInfo.accessToken)
+            _that.props.history.push('/console')
             break
           case 40103:
-            MessageBox.confirm('你已在其他设备登录，是否强制登录', '确认', {
-              confirmButtonText: '确认',
-              cancelButtonText: '取消',
-              type: 'warning',
-            }).then(() => {
-              this.forceLogin()
-            }).catch((e) => {
+            confirm({
+              title: 'Do you want to delete these items?',
+              content: '你已在其他设备登录，是否强制登录',
+              okText: '确认',
+              cancelText: '取消',
+              centered: true,
+              onOk() {
+                _that.forceLogin()
+              }
             })
             break
           default:
@@ -64,40 +65,54 @@ class Login extends React.Component {
         this.props.history.push('/console')
       })
   }
-  LoginForm() {
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.setState({
+          loginQuery: Object.assign(this.state.loginQuery, values)
+        })
+        this.login()
+      }
+    });
+  }
+  render() {
+    const { getFieldDecorator } = this.props.form
     return (
-      <Form
-        labelPosition="top"
-        labelWidth="100"
-        model={this.state.loginQuery}
-        className="login-form"
-      >
-        <Form.Item label="帐号">
-          <Input
-            value={this.state.loginQuery.loginName}
-            onChange={this.onChange.bind(this, 'loginName')}
-          />
+      <Form onSubmit={this.handleSubmit} className="login-form">
+        <Form.Item>
+          {getFieldDecorator('loginName', {
+            rules: [{ required: true, message: '请输入账号!' }],
+          })(
+            <Input
+              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder="用户名"
+            />,
+          )}
         </Form.Item>
-        <Form.Item label="密码">
-          <Input
-            value={this.state.loginQuery.password}
-            onChange={this.onChange.bind(this, 'password')}
-          />
+        <Form.Item>
+          {getFieldDecorator('password', {
+            rules: [{ required: true, message: '请输入密码!' }],
+          })(
+            <Input
+              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              type="password"
+              placeholder="密码"
+            />,
+          )}
         </Form.Item>
-        <Form.Item className="login-button">
-          <Button type="primary" size="small">
-            注册
-          </Button>
-          <Button type="primary" size="small" onClick={this.login.bind(this)}>
-            登录
-          </Button>
+        <Form.Item>
+          {getFieldDecorator('remember', {
+            valuePropName: 'checked',
+            initialValue: true,
+          })(<Checkbox>记住账号</Checkbox>)}
+          {/* <a className="login-form-forgot" href="/show">忘记密码</a> */}
+          <Button type="primary" htmlType="submit" className="login-form-button">登录</Button>
+          {/* 或 <a href="/show">注册</a> */}
         </Form.Item>
       </Form>
     )
   }
-  render() {
-    return <this.LoginForm />
-  }
 }
-
-export default connect(state => ({ token: state.token }), { setToken })(Login)
+const LoginForm = Form.create({ name: 'normal_login' })(Login)
+export default connect(state => ({ token: state.token }), { setToken })(LoginForm)
