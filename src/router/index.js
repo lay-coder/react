@@ -2,21 +2,23 @@
 import LayoutConsole from 'views/console/layout-console'
 import Login from 'views/login'
 import layoutShow from 'views/show/layout-show'
+import NotFound from 'views/404'
 const routes = [
   {
     path: '/console',
-    exact: true,
     component: LayoutConsole,
   },
   {
     path: '/login',
-    exact: true,
     component: Login,
   },
   {
     path: '/show',
-    exact: true,
     component: layoutShow,
+  },
+  {
+    path: '/404',
+    component: NotFound,
   },
 ]
 export default routes

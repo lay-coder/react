@@ -1,7 +1,7 @@
 import React from 'react'
-import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd'
+import { Form, Icon, Input, Button, Modal } from 'antd'
 import { connect } from 'react-redux'
-import { setToken } from 'store/user/action'
+import { setToken, setUserMenu } from 'store/user/action'
 import { login, forceLogin } from 'api/user'
 import './login.scss'
 
@@ -24,14 +24,6 @@ class Login extends React.Component {
   componentWillUnmount() {
     console.log('componentWillUnmount')
   }
-  onChange(key: any, value: any) {
-    this.setState({
-      loginQuery: Object.assign(this.state.loginQuery, { [key]: value })
-    })
-  }
-  keypress(e: any) {
-    console.log(e)
-  }
   login() {
     const _that = this
     login(_that.state.loginQuery)
@@ -39,7 +31,8 @@ class Login extends React.Component {
         switch (res.code) {
           case 0:
             _that.props.setToken(res.body.accountInfo.accessToken)
-            _that.props.history.push('/console')
+            _that.props.setUserMenu(res.body.menu)
+            _that.props.history.replace('/console/dashboard')
             break
           case 40103:
             confirm({
@@ -62,7 +55,8 @@ class Login extends React.Component {
     forceLogin(this.state.loginQuery)
       .then((res) => {
         this.props.setToken(res.body.accountInfo.accessToken)
-        this.props.history.push('/console')
+        this.props.setUserMenu(res.body.menu)
+        this.props.history.replace('/console/dashboard')
       })
   }
   handleSubmit = e => {
@@ -70,7 +64,10 @@ class Login extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.setState({
-          loginQuery: Object.assign(this.state.loginQuery, values)
+          loginQuery: Object.assign(this.state.loginQuery, {
+            loginName: values.loginName,
+            password: values.password
+          })
         })
         this.login()
       }
@@ -102,17 +99,17 @@ class Login extends React.Component {
           )}
         </Form.Item>
         <Form.Item>
-          {getFieldDecorator('remember', {
+          {/* {getFieldDecorator('remember', {
             valuePropName: 'checked',
             initialValue: true,
-          })(<Checkbox>记住账号</Checkbox>)}
-          {/* <a className="login-form-forgot" href="/show">忘记密码</a> */}
+          })(<Checkbox>记住账号</Checkbox>)} */}
+          <Button type='link'>申请账号</Button>
+          <Button type='link' style={{ float: 'right' }} className="login-form-forgot">忘记密码</Button>
           <Button type="primary" htmlType="submit" className="login-form-button">登录</Button>
-          {/* 或 <a href="/show">注册</a> */}
         </Form.Item>
       </Form>
     )
   }
 }
 const LoginForm = Form.create({ name: 'normal_login' })(Login)
-export default connect(state => ({ token: state.token }), { setToken })(LoginForm)
+export default connect(state => ({ token: state.token }), { setToken, setUserMenu })(LoginForm)

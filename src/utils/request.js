@@ -33,6 +33,7 @@ const http = async (method, url, query, errorMsg, successMsg) => {
           message.success(json.msg || successMsg, hideTime)
           break
         default:
+          message.warning(json.msg || successMsg, hideTime)
           break
       }
     }

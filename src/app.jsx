@@ -13,13 +13,12 @@ class App extends React.Component {
           <Switch>
             {routes.map((route, i) => (
               <Route
-                exact={route.exact}
                 key={i}
                 path={route.path}
                 render={props => <route.component {...props} routes={route.routes} />}>
               </Route>
             ))}
-            <Redirect to='/login'></Redirect>
+            <Redirect to={this.props.token ? '/console/dashboard' : '/login'}></Redirect>
           </Switch>
         </BrowserRouter>
       </Router>
