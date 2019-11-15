@@ -1,0 +1,16 @@
+$src: '../../../../../';
+
+
+.logo {
+  display: block;
+  height: 50px;
+  background: #303868;
+  background-image: url($src+'assets/LOGO-small.gif');
+  background-size: 36px 45px;
+  background-repeat: no-repeat;
+  transition: background-position-x .1s ease;
+  text-align: center;
+  font-size: 28px;
+  color: #fff;
+  line-height: 50px;
+}

@@ -2,30 +2,42 @@ import React from 'react'
 import { Layout, Menu, Icon } from 'antd'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { connect } from 'react-redux'
-
+import { Link } from 'react-router-dom'
 import './console-sider.scss'
 
 const { Sider } = Layout
 const { SubMenu } = Menu
 
 class ConsoleSider extends React.Component {
-  componentDidMount() {
-    // console.log(this.props)
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeMenuItem: []
+    }
   }
   toShow = () => {
-    this.props.history.push('/show')
+    this.props.history.push({
+      pathname: '/show',
+      target: '_blank'
+    })
   }
-  clickMenu = ({ key }) => {
-    this.props.history.push('/console' + key)
+  clickMenu = ({ key, keyPath, selectedKeys }) => {
+    const { history } = this.props
+    history.push(`/console${key}`)
+    console.log(history)
+    console.log(history.location.pathname)
+    console.log(key, keyPath, selectedKeys)
+    this.setState({
+      activeMenuItem: selectedKeys
+    })
   }
   render() {
     return (
       <Sider trigger={null} collapsible collapsed={this.props.collapsed}>
-        <div className="logo"
-          style={{ backgroundPositionX: this.props.collapsed ? 'center' : 'left' }}
-          onClick={this.toShow}>
+        <Link className="logo" to="/show" target='_blank'
+          style={{ backgroundPositionX: this.props.collapsed ? 'center' : 'left' }}>
           {!this.props.collapsed && '进入前台'}
-        </div>
+        </Link>
         <Scrollbars autoHide style={{ height: 'calc(100% - 50px)' }} className="scrollbar"
           renderThumbVertical={
             () => (
@@ -36,7 +48,7 @@ class ConsoleSider extends React.Component {
               }} />
             )
           }>
-          <Menu theme="dark" mode="inline" onClick={this.clickMenu}>
+          <Menu theme="dark" mode="inline" onSelect={this.clickMenu} selectedKeys={this.state.activeMenuItem}>
             {
               this.props.userMenu.map(i => (
                 <SubMenu

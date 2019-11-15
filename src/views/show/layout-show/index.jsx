@@ -15,7 +15,7 @@ class LayoutShow extends React.Component {
     return (
       <div style={{ backgroundColor: this.props.theme.bgColor }}>
         show
-        <Link to="/console">
+        <Link target="_blank" to="/console/dashboard">
           进入后台
         </Link>
       </div>
