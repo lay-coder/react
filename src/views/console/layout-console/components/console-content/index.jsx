@@ -4,9 +4,13 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PageOne from 'views/console/pages-message/message-personal'
 import Dashboard from 'views/console/dashboard'
+import NotFound from 'views/404'
 
 const { Content } = Layout
 class ConsoleContent extends React.Component {
+  componentDidMount() {
+    console.log(this.props.history.location.pathname)
+  }
   render() {
     return (
       <Content
@@ -29,7 +33,8 @@ class ConsoleContent extends React.Component {
                   <Redirect to='/console/message/personal' />
                 </Switch>
               } />
-              <Redirect to='/console/dashboard' />
+              <Route path='/console/404' component={NotFound}></Route>
+              <Redirect to='/console/404' />
             </Switch>
           } />
         </Switch>

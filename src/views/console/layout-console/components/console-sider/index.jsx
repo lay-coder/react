@@ -15,21 +15,8 @@ class ConsoleSider extends React.Component {
       activeMenuItem: []
     }
   }
-  toShow = () => {
-    this.props.history.push({
-      pathname: '/show',
-      target: '_blank'
-    })
-  }
-  clickMenu = ({ key, keyPath, selectedKeys }) => {
-    const { history } = this.props
-    history.push(`/console${key}`)
-    console.log(history)
-    console.log(history.location.pathname)
-    console.log(key, keyPath, selectedKeys)
-    this.setState({
-      activeMenuItem: selectedKeys
-    })
+  componentDidMount() {
+    console.log(this.props.history.location.pathname)
   }
   render() {
     return (
@@ -48,11 +35,11 @@ class ConsoleSider extends React.Component {
               }} />
             )
           }>
-          <Menu theme="dark" mode="inline" onSelect={this.clickMenu} selectedKeys={this.state.activeMenuItem}>
+          <Menu theme="dark" mode="inline" >
             {
               this.props.userMenu.map(i => (
                 <SubMenu
-                  key={i.uri}
+                  key={`/console${i.uri}`}
                   title={
                     <span>
                       <Icon type="chrome" />
@@ -60,7 +47,11 @@ class ConsoleSider extends React.Component {
                     </span>
                   }>
                   {i.children && i.children.map(j => (
-                    <Menu.Item key={j.uri}><Icon type="tag" />{j.name}</Menu.Item>
+                    <Menu.Item key={`/console${j.uri}`}>
+                      <Link to={`/console${j.uri}`}>
+                        <Icon type="tag" />{j.name}
+                      </Link>
+                    </Menu.Item>
                   ))}
                 </SubMenu>
               ))
