@@ -39,7 +39,7 @@ const http = async (method, url, query, errorMsg, successMsg) => {
     }
     return json
   } catch (err) {
-    message.error(err || '网络错误', hideTime)
+    message.error('网络错误', hideTime)
   }
   return errorResult
 }
