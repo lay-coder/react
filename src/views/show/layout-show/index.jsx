@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-// import { changeTheme } from 'store/app/action'
+import Heat from '../heat'
 
 class LayoutShow extends React.Component {
   static propTypes = {
@@ -13,8 +13,10 @@ class LayoutShow extends React.Component {
   }
   render() {
     return (
-      <div style={{ backgroundColor: this.props.theme.bgColor }}>
-        show
+      <div style={{ width: '100%', height: '100%' }}>
+        <div style={{ width: '80%', height: 'calc(100% - 40px)', margin: 'auto', paddingTop: '20px' }}>
+          <Heat></Heat>
+        </div>
         <Link target="_blank" to="/console/dashboard">
           进入后台
         </Link>
