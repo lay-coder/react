@@ -44,10 +44,10 @@ const http = async (method, url, query, errorMsg, successMsg) => {
   return errorResult
 }
 const request = {
-  get(url, query = {}, errorMsg = '', successMsg = '') {
+  get(url, query = {}, errorMsg = '请求失败', successMsg = '请求成功') {
     return http('GET', url, query, errorMsg, successMsg)
   },
-  post(url, query, errorMsg = '', successMsg = '') {
+  post(url, query, errorMsg = '请求失败', successMsg = '请求成功') {
     return http('POST', url, query, errorMsg, successMsg)
   }
 }

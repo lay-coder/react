@@ -1,9 +1,12 @@
+import { isEmpty } from 'lodash'
 import request from 'utils/request'
+import { getIntervalTime } from 'utils/datetime'
+import { searchPlace } from 'api/common'
 
-const getHeatData = async (heatQuery: Dictionary<any>) => {
+const getHeatData = async query => {
   let placeResult = []
-  if (heatQuery.placeKeyword && !isEmpty(heatQuery.placeKeyword)) {
-    const response = await searchPlace(heatQuery.placeKeyword)
+  if (query.placeKeyword && !isEmpty(query.placeKeyword)) {
+    const response = await searchPlace(query.placeKeyword)
     if (!isEmpty(response.body)) {
       placeResult = response.body.map((e: any) => e.id)
     }
@@ -11,14 +14,16 @@ const getHeatData = async (heatQuery: Dictionary<any>) => {
   return request.get(
     '/api/flow/search',
     {
-      fromTime: getIntervalTime(-60 * 15, heatQuery.toTime),
-      toTime: heatQuery.toTime,
-      placeIdList: heatQuery.serviceCodeList.concat(placeResult).join(','),
-      policeCodeList: heatQuery.policeCodeList.join(','),
-      placeType: heatQuery.type,
-      orgCodeList: heatQuery.orgCodeList ? heatQuery.orgCodeList.join(',') : '',
-      durationType: heatQuery.durationType,
+      fromTime: getIntervalTime(-60 * 15, query.toTime),
+      toTime: query.toTime,
+      placeIdList: query.serviceCodeList.concat(placeResult).join(','),
+      policeCodeList: query.policeCodeList.join(','),
+      placeType: query.type,
+      orgCodeList: query.orgCodeList ? query.orgCodeList.join(',') : '',
+      durationType: query.durationType,
     },
     '获取数据失败',
+    '获取数据成功',
   )
 }
+export { getHeatData }
