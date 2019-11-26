@@ -35,6 +35,7 @@ export default class Heat extends React.Component {
   async getHeatData() {
     const response = await getHeatData(this.query)
     this.mapData = response.body.realtime
+    this.rnederHeat()
     this.changeMapShow()
   }
   /**
@@ -99,7 +100,7 @@ export default class Heat extends React.Component {
   render() {
     return (
       <div className='show-container'>
-        <Map ref={this.map}></Map>
+        <Map ref={this.map} />
         <Button onClick={this.changeMapShow.bind(this, 0)}>热力图</Button>
         <Button onClick={this.changeMapShow.bind(this, 1)}>设备点图</Button>
         <Button onClick={this.changeMapShow.bind(this, 2)}>人流趋势图</Button>
